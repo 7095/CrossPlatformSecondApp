@@ -7,6 +7,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Signup } from './components/Signup';
 import { Signin } from './components/Signin';
 import { Home } from './components/Home';
+//firebase
+import { firebaseConfig } from './Config';
+import { initializeApp } from 'firebase/app'
+
+initializeApp ( firebaseConfig )
+
 
 const Stack = createNativeStackNavigator();
 
