@@ -1,10 +1,10 @@
 import React from "react";
-import { TouchableOpacity,Text } from "react-native";
+import { View, TouchableOpacity,Text } from "react-native";
 
 export function Feedback ( props ) {
     return (
         <View>
-            <Text/>
+            <Text> { props.message } </Text>
         </View>
     )
 }
