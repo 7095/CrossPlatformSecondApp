@@ -2,6 +2,7 @@ import React, {useRef,useEffect, useState} from 'react';
 import  { View, Text, StyleSheet,Button, KeyboardAvoidingView, Platform , TextInput,TouchableOpacity} from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import {ThemeColors} from  './ThemeColors';
+import { Feedback } from './Feedback';
 
 
 
@@ -74,6 +75,7 @@ export function Signup (props){
                     >
                         <Text style={styles.buttonText}>Signup</Text>                
                     </TouchableOpacity>
+                    <Feedback message = { props.error}/>
                     <Text>Already Have An Account?</Text>
                     <Button
                         title="Click Here to sign in"

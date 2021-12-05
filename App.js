@@ -10,7 +10,7 @@ import { Home } from './components/Home';
 //firebase
 import { firebaseConfig } from './Config';
 import { initializeApp } from 'firebase/app'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword,onAuthStateChanged,signInWithEmailAndPassword } from 'firebase/auth'
 
 initializeApp ( firebaseConfig )
 
@@ -22,10 +22,22 @@ export default function App() {
 
   const [ auth, setAuth ]= useState()
   const [ user, setUser ]= useState()
+  const FBauth= getAuth()
+
+  useEffect(() => {
+    onAuthStateChanged( FBauth,(user) =>{
+      if ( user ) {
+        setAuth(true)
+        setUser(user)
+      }else{
+        setAuth(false)
+        setUser(null)
+      }
+    })
+  })
 
   const SignupHandler = ( email , password ) => {
-    const auth= getAuth()
-    createUserWithEmailAndPassword( auth , email, password )
+    createUserWithEmailAndPassword( FBauth , email, password )
     .then(  (userCredential) => { 
       console.log( userCredential)
       setUser( userCredential )
@@ -33,6 +45,15 @@ export default function App() {
     } )
     .catch( (error) => { console.log( error)} )
 
+  }
+
+  const SigninHandler =(email, password)=>{
+    signInWithEmailAndPassword( FBauth, email,password)
+    .then ( ( userCredential )  => {
+      setUser( userCredential )
+      setAuth(true)
+    })
+    .catch( ( error ) => { console.log( error ) })
   }
 
   return (
@@ -52,11 +73,14 @@ export default function App() {
 
         <Stack.Screen 
         name="Signin" 
-        component={Signin} 
         options={{
           title:'Sing In'
         }}
-        />
+        >
+          {
+            (props)
+          }
+        </Stack.Screen>
         <Stack.Screen 
         name="Home" 
         component={Home}
