@@ -4,12 +4,16 @@ import { useNavigation } from '@react-navigation/core';
 
 
 export function Home (props){
-    const Navigation = useNavigation()
+    const navigation = useNavigation()
 
     useEffect( ( ) => {
-        
-    })
-    return(
+
+        if(!props.auth) {
+            navigation.reset({ index: 0, routes: [ {name: 'Signin'} ] })
+        }
+    },[ props.auth])
+
+    return(  
         <View>
             <Text> Home</Text>
             

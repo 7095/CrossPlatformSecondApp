@@ -43,7 +43,6 @@ export default function App() {
     setSignupError(null)
     createUserWithEmailAndPassword( FBauth , email, password )
     .then(  (userCredential) => { 
-      console.log( userCredential)
       setUser( userCredential )
       setAuth(true) 
     } )
@@ -61,6 +60,7 @@ export default function App() {
   }
 
   const SignoutHandler = () => {
+    
     signOut( FBauth ).then ( () =>{
       setAuth( false )
       setUser( null )
@@ -93,13 +93,12 @@ export default function App() {
         handler={SigninHandler} 
         /> }
         </Stack.Screen>
-        <Stack.Screen name="Home">
-          {(props) => <Home {...props} auth={auth}
-          options={{
-            headerTitle:"Test",
-            headerRight: (props) => (<Signout {...props} />)
-          }}
-          /> }
+        <Stack.Screen name="Home" options={{
+          headerTitle: "Home",
+          headerRight: (props) => <Signout {...props} handler={SignoutHandler} />
+        }}>
+          { (props) => 
+          <Home {...props} auth={auth} /> }
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
