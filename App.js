@@ -7,10 +7,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Signup } from './components/Signup';
 import { Signin } from './components/Signin';
 import { Home } from './components/Home';
+import { Signout } from './components/Signout';
 //firebase
 import { firebaseConfig } from './Config';
 import { initializeApp } from 'firebase/app'
-import { getAuth, createUserWithEmailAndPassword,onAuthStateChanged,signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword,onAuthStateChanged,signInWithEmailAndPassword, signOut } from 'firebase/auth'
 
 initializeApp ( firebaseConfig )
 
@@ -59,6 +60,14 @@ export default function App() {
     .catch( ( error ) => { setSigninError( error.code ) })
   }
 
+  const SignoutHandler = () => {
+    signOut( FBauth ).then ( () =>{
+      setAuth( false )
+      setUser( null )
+    })
+    .catch( (error) => console.log( error.code ) )
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -84,13 +93,14 @@ export default function App() {
         handler={SigninHandler} 
         /> }
         </Stack.Screen>
-        <Stack.Screen 
-        name="Home" 
-        component={Home}
-        options={{
-          title:'Home'
-        }}
-        />
+        <Stack.Screen name="Home">
+          {(props) => <Home {...props} auth={auth}
+          options={{
+            headerTitle:"Test",
+            headerRight: (props) => (<Signout {...props} />)
+          }}
+          /> }
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

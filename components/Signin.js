@@ -7,12 +7,16 @@ import { Feedback } from './Feedback';
 
 export function Signin (props){
     const navigation = useNavigation()
+    const [email, setEmail]= useState()
+    const [passward, setPassword]= useState()
 
     useEffect( () => {
         if(props.auth === true){
             navigation.reset({index:0, routes: [ { name: 'Home' } ] } )
         }
     }, [ props.auth] )
+
+
     return(
         <View style={styles.mainView}>
             <Text>Sign In</Text>
@@ -21,10 +25,16 @@ export function Signin (props){
             >
                 <View style={styles.innerView}>
                 <Text>Email</Text>
-                    <TextInput style={styles.input}/>
+                    <TextInput 
+                    style={styles.input} 
+                    onChangeText={ (val) => setEmail(val) } />
                     <Text>Password</Text>
-                    <TextInput style={styles.input} secureTextEntry={true} />
-                    <TouchableOpacity style={styles.button}>
+                    <TextInput 
+                    style={styles.input} 
+                    secureTextEntry={true} 
+                    onChangeText={ (val) => setPassword(val) } />
+
+                    <TouchableOpacity style={styles.button} onPress= {() => {props.handler(email,passward)} } >
                         <Text style={styles.buttonText}>Signin</Text>                
                     </TouchableOpacity>
                     <Feedback message= {props.message}/>
