@@ -16,7 +16,7 @@ export function Home (props){
     const data = { time: new Date().getTime(), user: Math.random() * 100 }
     return(  
         <View>
-            <Text> Home</Text>
+            <Text> home</Text>
             <TouchableOpacity style={styles.button} onPress={ () => { props.add('users', data ) } }>
                 <Text> Add more </Text>
             </TouchableOpacity>
