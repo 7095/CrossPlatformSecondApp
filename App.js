@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useRef,useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -39,12 +39,9 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  const [ auth, setAuth ]= useState()
-  const [ user, setUser ]= useState()
-  //const FBauth= getAuth()
-  const firestore = getFirestore()
+  const [ auth, setAuth ] = useState()
+  const [ user, setUser ] = useState()
   const [ data, setData ] = useState()
-
   const [signupError, setSignupError ] = useState()
   const [signinError, setSigninError ] = useState()
 
@@ -55,7 +52,7 @@ export default function App() {
         setUser(user)
         console.log( 'authed')
         // console.log( 'authed')
-        if( !data ) { getData() }
+        //if( !data ) { getData() }
       }
       else {
         setAuth(false)
@@ -64,11 +61,13 @@ export default function App() {
     })
   })
 
-  //useEffect( () => {
-    //if( !data && auth=== true && user === true) {
-      //getData()      
-    //}
-  //}, [data, auth, user] )
+    useEffect( () => {
+     if( !data && user ) {
+      getData()
+      console.log('helllo')
+     }
+   }, [data,auth, user])
+
 
   const SignupHandler = ( email , password ) => {
     setSignupError(null)
@@ -109,10 +108,10 @@ export default function App() {
    //console.log( ref.id )
   }
 
-  const getData = () => {
+  const getData = async () => {
     console.log('...getting data', user)
     const FSquery = query( collection( FSdb, `users/${user.uid}/documents`) )
-    const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+    const unsubscribe  = onSnapshot( FSquery, ( querySnapshot ) => {
       let FSdata = []
       querySnapshot.forEach( (doc) => {
         let item = {}
@@ -155,7 +154,7 @@ export default function App() {
           headerRight: (props) => <Signout {...props} handler={SignoutHandler} user={user} />
         }}>
           { (props) => 
-          <Home {...props} auth={auth} add={addData} data={data} /> }
+          <Home {...props} auth={auth} add={addData} data={ data } /> }
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
