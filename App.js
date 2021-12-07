@@ -12,10 +12,11 @@ import { Signout } from './components/Signout';
 import { firebaseConfig } from './Config';
 import { initializeApp } from 'firebase/app'
 import { getAuth, createUserWithEmailAndPassword,onAuthStateChanged,signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { getFirestore, setDoc, doc } from 'firebase/firestore'
+import { initializeFirestore, collection, addDoc , getFirestore, setDoc, doc } from 'firebase/firestore'
 
-initializeApp ( firebaseConfig )
-
+const FBapp = initializeApp ( firebaseConfig )
+const FSdb = initializeFirestore ( FBapp, {useFetchStreams: false } )
+const FBauth = getAuth()
 
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +25,7 @@ export default function App() {
 
   const [ auth, setAuth ]= useState()
   const [ user, setUser ]= useState()
-  const FBauth= getAuth()
+  //const FBauth= getAuth()
   const firestore = getFirestore()
 
   const [signupError, setSignupError ] = useState()
@@ -35,6 +36,7 @@ export default function App() {
       if ( user ) {
         setAuth(true)
         setUser(user)
+        console.log( 'authed')
       }else{
         setAuth(false)
         setUser(null)
@@ -46,23 +48,23 @@ export default function App() {
     setSignupError(null)
     createUserWithEmailAndPassword( FBauth , email, password )
     .then(  (userCredential) => { 
-      console.log(userCredential)
-      createUser('users', { id: userCredential.user.uid, email: userCredential.user.email })
-      setUser( userCredential )
+      setUser( userCredential.user )
       setAuth(true) 
-
     } )
     .catch( (error) => { setSignupError( error.code) } )
-
   }
 
   const SigninHandler =(email, password)=>{
     signInWithEmailAndPassword( FBauth, email,password)
     .then ( ( userCredential )  => {
-      setUser( userCredential )
+      setUser( userCredential.user )
       setAuth(true)
+      console.log(userCredential.user.uid)
     })
-    .catch( ( error ) => { setSigninError( error.code ) })
+    .catch( ( error ) => { 
+      const message = (error.code.includes('/') ) ? error.code.Split('/')[1].replace(/-/g,' '): error.code
+      setSigninError( message ) 
+    })
   }
 
   const SignoutHandler = () => {
@@ -74,11 +76,10 @@ export default function App() {
     .catch( (error) => console.log( error.code ) )
   }
 
-  const createUser = async ( collection, data ) => {
-    firestore.collection( collection ).doc(data.id).set(data)
-    .then ( ( response )=> console.log( response ) )
-    .catch ( ( error ) => console.log( error ) )
-
+  const addData  = async ( FScollection, data ) => {
+    //adding data to a collection with auto generated id
+   const ref = await addDoc( collection( FSdb, FScollection ), data )
+   console.log( ref.id )
   }
 
   return (
@@ -111,7 +112,7 @@ export default function App() {
           headerRight: (props) => <Signout {...props} handler={SignoutHandler} />
         }}>
           { (props) => 
-          <Home {...props} auth={auth} /> }
+          <Home {...props} auth={auth} add={addData} /> }
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

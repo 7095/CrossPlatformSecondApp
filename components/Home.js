@@ -1,5 +1,5 @@
 import React, {useRef,useEffect, useState} from 'react';
-import  { View, Text, StyleSheet } from "react-native"
+import  { View, Text, StyleSheet,TouchableOpacity  } from "react-native"
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -13,10 +13,21 @@ export function Home (props){
         }
     },[ props.auth])
 
+    const data = { time: new Date().getTime(), user: 'test'}
     return(  
         <View>
             <Text> Home</Text>
-            
+            <TouchableOpacity style={styles.button} onPress={ () => { props.add('users', data ) } }>
+                <Text> Add more </Text>
+            </TouchableOpacity>
         </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    button: {
+      backgroundColor: 'cyan',
+      padding: 10,
+    },
+  }) 
