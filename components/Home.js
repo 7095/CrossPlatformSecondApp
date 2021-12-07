@@ -13,7 +13,7 @@ export function Home (props){
         }
     },[ props.auth])
 
-    const data = { time: new Date().getTime(), user: 'test'}
+    const data = { time: new Date().getTime(), user: Math.random() * 100 }
     return(  
         <View>
             <Text> Home</Text>

@@ -78,8 +78,9 @@ export default function App() {
 
   const addData  = async ( FScollection, data ) => {
     //adding data to a collection with auto generated id
-   const ref = await addDoc( collection( FSdb, FScollection ), data )
-   console.log( ref.id )
+   //const ref = await addDoc( collection( FSdb, FScollection ), data )
+   const ref = await setDoc( doc ( FSdb, `users/${user.uid}/documents/${ new Date().getTime() }`), data )
+   //console.log( ref.id )
   }
 
   return (
