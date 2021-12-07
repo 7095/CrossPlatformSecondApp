@@ -1,5 +1,5 @@
 import React, {useRef,useEffect, useState} from 'react';
-import  { View, Text, StyleSheet,Button, KeyboardAvoidingView, Platform , TextInput,TouchableOpacity} from "react-native"
+import  { View, Text, StyleSheet,Button, KeyboardAvoidingView,Image , Platform , TextInput,TouchableOpacity} from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import {ThemeColors} from  './ThemeColors';
 import { Feedback } from './Feedback';
@@ -19,7 +19,9 @@ export function Signin (props){
 
     return(
         <View style={styles.mainView}>
+            <Image style={styles.headerImage} source={require("../assets/login-icon.png")} />
             <Text>Sign In</Text>
+            
             <KeyboardAvoidingView 
                 behavior={ Platform.OS === "ios"? "padding" : "height"}
             >
@@ -52,6 +54,7 @@ export function Signin (props){
 
 
 const styles = StyleSheet.create({
+
     mainView:{
         flex:1,
         backgroundColor:'cyan',
@@ -74,5 +77,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },text:{
 
-    }
+    },headerImage: {
+        width: 50,
+        height: 50,
+        marginHorizontal: 10,
+    },
 });

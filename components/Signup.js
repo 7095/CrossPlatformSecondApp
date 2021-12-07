@@ -1,5 +1,5 @@
 import React, {useRef,useEffect, useState} from 'react';
-import  { View, Text, StyleSheet,Button, KeyboardAvoidingView, Platform , TextInput,TouchableOpacity} from "react-native"
+import  { View, Text, StyleSheet, Button, Image , KeyboardAvoidingView, Platform , TextInput, TouchableOpacity} from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import {ThemeColors} from  './ThemeColors';
 import { Feedback } from './Feedback';
@@ -56,10 +56,10 @@ export function Signup (props){
     
     return(
         <View style={styles.mainView}>
-            <Text>Sign Up</Text>
+            <Image style={styles.headerImage} source={require("../assets/signup-icon.jpg")} />
+            <Text style={styles.headerTitle}>Sign Up</Text>
             <KeyboardAvoidingView 
-                behavior={ Platform.OS === "ios"? "padding" : "height"}
-            >
+                behavior={ Platform.OS === "ios"? "padding" : "height"} >
                 <View style={styles.innerView}>
                     <Text>Email</Text>
                     <TextInput style={styles.input} onChangeText={ (val) =>  validateEmail ( val ) } />
@@ -123,5 +123,12 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         opacity:0.2,
+    },headerImage: {
+        width: 50,
+        height: 50,
+        marginHorizontal: 10,
+        
+    },headerTitle:{
+        flexDirection: 'row',
     }
 });

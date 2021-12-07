@@ -108,7 +108,7 @@ export default function App() {
    //console.log( ref.id )
   }
 
-  const getData = async () => {
+  const getData =  () => {
     console.log('...getting data', user)
     const FSquery = query( collection( FSdb, `users/${user.uid}/documents`) )
     const unsubscribe  = onSnapshot( FSquery, ( querySnapshot ) => {

@@ -8,6 +8,7 @@ export function Signout ( props ) {
     return (
     
     <TouchableOpacity onPress={ () => props.handler() }>
+      
       <Text style={styles.signoutText}>Signout</Text>
     </TouchableOpacity>
   )
